@@ -1,0 +1,41 @@
+
+{{/* Add pages and page resources. */}}
+{{ range .Site.Data.fowl }}
+
+  {{/* Add page. */}}
+  {{ $content := dict "mediaType" "text/markdown" "value" .content }}
+  {{ $img := fmt.Printf "/images/%s" .image }}
+  {{ $cover := dict "image" $img "caption" .title }}
+  {{ $path := urls.URLize .title }}
+  {{ $page := dict
+    "title" .title
+    "date" .date
+    "path" $path
+    "content" $content
+    "cover" $cover
+  }}
+  {{ $.AddPage $page }}
+
+  {{/* Add page resource. */}}
+  {{ $item := . }}
+  {{ with $url := $item.cover }}
+    {{ with try (resources.GetRemote $url) }}
+      {{ with .Err }}
+        {{ errorf "Unable to get remote resource %s: %s" $url . }}
+      {{ else with .Value }}
+        {{ $content := dict "mediaType" .MediaType.Type "value" .Content }}
+        {{ $params := dict "alt" $item.title }}
+        {{ $resource := dict
+          "content" $content
+          "params" $params
+          "cover" $cover
+          "path" (printf "%s/cover.%s" $item.title .MediaType.SubType)
+        }}
+        {{ $.AddResource $resource }}
+      {{ else }}
+        {{ errorf "Unable to get remote resource %s" $url }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+
+{{ end }}
