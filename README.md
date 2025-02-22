@@ -15,8 +15,3 @@ This site generates two pages:
 * `public/fowl/ducks/index.html` (from `content/fowl/ducks.md`)
 * `public/fowl/geese/index.html` (from `content/fowl/_content.gotmpl`, which uses `data/fowl.yaml` as a data source)
 
-But as you can see in the screenshot (or by cloning this repo and
-running `hugo server`), the page generated via `_content.gotmpl` in
-incomplete: It is missing the cover image and the date.
-
-![](screenshot.png)

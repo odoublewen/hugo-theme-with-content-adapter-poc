@@ -1,5 +1,4 @@
 
-{{/* Add pages and page resources. */}}
 {{ range .Site.Data.fowl }}
 
   {{/* Add page. */}}
@@ -8,7 +7,7 @@
   {{ $dates := dict "date" (time.AsTime .date) }}
   {{ $page := dict
     "title" .title
-    "dates" .dates
+    "dates" $dates
     "draft" .draft
     "path" (urls.URLize .title)
     "content" $content
